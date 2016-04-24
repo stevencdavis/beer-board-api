@@ -14,8 +14,7 @@
 
 ;; Default 'options' resource to allow options requests on any route
 (defresource options
-             :allowed-methods [:options]
-             :malformed? (fn [_] (spy _)))
+             :allowed-methods [:options])
 
 (defn app-routes
   "Returns the web handler function as a closure over the
