@@ -2,7 +2,7 @@
   (:require [signafire.lib.database.store.beers :as beers]
             [liberator.core :refer [defresource]]
             [clojure.data.json :as json]
-            [taoensso.timbre :refer [spy error]])
+            [taoensso.timbre :refer [spy debug error]])
   (:import (java.sql Timestamp)))
 
 
@@ -38,26 +38,28 @@
                              true))
              :handle-ok (fn [_]
                           (try
-                            (spy "Fetching beers!")
+                            (debug "Fetching beers!")
                             (let [beers (beers/get-beers (:connection database))]
                               {:meta    {}
                                :results beers})
                             (catch Throwable t
                               (-> t (error) (throw))))))
 
-(defresource save-beer
+(defresource update-beer
              ;; Get a list of activities for a particular user
-             [database]
+             [database location floor type empty foamy flat warm slow]
              base-resource
              :allowed-methods [:put]
              :malformed? (fn [_]
-                           (when (or (nil? "some param"))
+                           (when (or (nil? database)
+                                     (nil? location)
+                                     (nil? floor))
                              true))
-             :handle-ok (fn [_]
-                          (try
-                            (spy "Fetching beers!")
-                            (let [beers (beers/get-beers (:connection database))]
-                              {:meta    {}
-                               :results beers})
-                            (catch Throwable t
-                              (-> t (error) (throw))))))
+             :put! (fn [_]
+                     (try
+                       (debug "Updating beer!")
+                       (let [beers (beers/update-beer (:connection database) location floor type empty foamy flat warm slow)]
+                         {:meta    {}
+                          :results beers})
+                       (catch Throwable t
+                         (-> t (error) (throw))))))
