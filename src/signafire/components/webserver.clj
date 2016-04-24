@@ -48,14 +48,15 @@
                                     (middleware/ignore-trailing-slash)
                                     (ring-json/wrap-json-params)
                                     (site)
-                                    (cors/wrap-cors :access-control-allow-origin (mapv re-pattern (spy allowed-origins))
-                                                    :access-control-allow-methods [:get :put :post :patch :options]
-                                                    :access-control-allow-headers #{"Origin"
-                                                                                    "X-Requested-With"
-                                                                                    "Content-Type"
-                                                                                    "Accept"
-                                                                                    "Accept-Encoding"
-                                                                                    "DNT"}))
+                                    (cors/wrap-cors :access-control-allow-origin (mapv re-pattern allowed-origins)
+                                                    :access-control-allow-credentials true
+                                                    :access-control-allow-methods #{:get :put :post :patch :delete :options}
+                                                    :access-control-allow-headers #{"origin"
+                                                                                    "x-requested-with"
+                                                                                    "content-type"
+                                                                                    "accept"
+                                                                                    "accept-encoding"
+                                                                                    "dnt"}))
                         handler (if dev-mode
                                   (do
                                     (infof "Using hot code reload! (%s mode)" environment)
