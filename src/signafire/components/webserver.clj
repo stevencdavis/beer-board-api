@@ -8,6 +8,7 @@
             [liberator.core :refer [defresource]]
             [org.httpkit.server :as httpkit-server]
             [ring.middleware.cors :as cors]
+            [ring.middleware.json :as ring-json]
             [ring.middleware.reload :as reload]
             [taoensso.timbre :as log :refer [spy info infof debug debugf error errorf]]))
 
@@ -45,6 +46,7 @@
                                      (= "test" environment))
                         handler (-> (app-routes database)
                                     (middleware/ignore-trailing-slash)
+                                    (ring-json/wrap-json-params)
                                     (site)
                                     (cors/wrap-cors :access-control-allow-origin (mapv re-pattern (spy allowed-origins))
                                                     :access-control-allow-methods [:get :put :post :patch :options]

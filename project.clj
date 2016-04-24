@@ -9,6 +9,7 @@
                  [com.stuartsierra/component "0.3.1"]
                  [http-kit "2.1.19"]
                  [ring-cors "0.1.7"]
+                 [ring/ring-json "0.4.0"]
                  [ring/ring-devel "1.4.0"]
                  [compojure "1.5.0"]
                  [liberator "0.14.1"]
