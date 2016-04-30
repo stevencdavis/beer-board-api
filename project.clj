@@ -8,6 +8,7 @@
                  [com.taoensso/timbre "4.3.1"]
                  [com.stuartsierra/component "0.3.1"]
                  [http-kit "2.1.19"]
+                 [javax.servlet/servlet-api "2.5"]
                  [ring-cors "0.1.7"]
                  [ring/ring-json "0.4.0"]
                  [ring/ring-devel "1.4.0"]
