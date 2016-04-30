@@ -27,7 +27,7 @@
     (OPTIONS "/*" [] options)
 
     (GET "/beers" {{:keys [] :or {}} :params} (resources/get-beers database))
-    (PUT "/beers" [location floor type empty foamy flat warm slow] (resources/update-beer database location floor type empty foamy flat warm slow))
+    (PUT "/beers" [location floor type status foamy flat warm slow] (resources/update-beer database location floor type status foamy flat warm slow))
 
     (route/not-found (fn [ctx]                              ;; all other, return 404
                        (debugf "Bad request [%s] from %s" (:uri ctx) (:remote-addr ctx))

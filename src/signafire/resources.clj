@@ -2,6 +2,8 @@
   (:require [signafire.lib.database.store.beers :as beers]
             [liberator.core :refer [defresource]]
             [clojure.data.json :as json]
+            [clj-time.core :as t]
+            [clj-time.coerce :as tc]
             [taoensso.timbre :refer [spy debug error]])
   (:import (java.sql Timestamp)))
 
@@ -47,7 +49,7 @@
 
 (defresource update-beer
              ;; Get a list of activities for a particular user
-             [database location floor type empty foamy flat warm slow]
+             [database location floor type status foamy flat warm slow]
              base-resource
              :allowed-methods [:put]
              :malformed? (fn [_]
@@ -58,8 +60,9 @@
              :put! (fn [_]
                      (try
                        (debug "Updating beer!")
-                       (let [beers (beers/update-beer (:connection database) location floor type empty foamy flat warm slow)]
-                         {:meta    {}
-                          :results beers})
+                       (let [modified (tc/to-sql-time (t/now))
+                             beers (beers/update-beer (:connection database) location floor type status foamy flat warm slow modified)]
+                         {::data {:meta    {}
+                                  :results {:modified modified}}})
                        (catch Throwable t
                          (-> t (error) (throw))))))

@@ -4,18 +4,19 @@
 (defn get-beers
   [conn]
   (j/query conn
-           ["SELECT location, floor, type, foamy, flat, slow, warm, empty, modified
+           ["SELECT location, floor, type, status, foamy, flat, slow, warm, modified
              FROM beers
              ORDER BY floor ASC"]))
 
 (defn update-beer
-  [conn location floor type empty foamy flat warm slow]
+  [conn location floor type status foamy flat warm slow modified]
   (j/update! conn :beers
-             {:type type
-              :empty empty
-              :foamy foamy
-              :flat flat
-              :warm warm
-              :slow slow}
+             {:type     type
+              :status   status
+              :foamy    foamy
+              :flat     flat
+              :warm     warm
+              :slow     slow
+              :modified modified}
              ["location = ? AND floor = ?"
               location floor]))
