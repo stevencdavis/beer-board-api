@@ -1,7 +1,9 @@
 {:system     {:log-level #nomad/env-var "LOG_LEVEL"}
- :web-server {:port            8092
+ :web-server {:port            8090
               :max-body        4096
               :allowed-origins ["http://localhost:3000"
                                 ".*"]}
  :database   {:subprotocol "sqlite"
-              :subname     "beerboard.db"}}
+              :subname     "beerboard.db"}
+ :nomad/environments
+ {"prod" {:web-server {:port 8092}}}}
