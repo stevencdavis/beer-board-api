@@ -63,6 +63,6 @@
                        (let [modified (tc/to-sql-time (t/now))
                              beers (beers/update-beer (:connection database) location floor type status foamy flat warm slow modified)]
                          {::data {:meta    {}
-                                  :results {:modified modified}}})
+                                  :results {:modified (tc/to-long modified)}}})
                        (catch Throwable t
                          (-> t (error) (throw))))))
