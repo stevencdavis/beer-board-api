@@ -20,3 +20,16 @@
               :modified modified}
              ["location = ? AND floor = ?"
               location floor]))
+
+(defn log-action
+  [conn location floor type status foamy flat warm slow modified]
+  (j/insert! conn :actions
+             {:location location
+              :floor    floor
+              :type     type
+              :status   status
+              :foamy    foamy
+              :flat     flat
+              :warm     warm
+              :slow     slow
+              :modified modified}))

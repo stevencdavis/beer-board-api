@@ -4,7 +4,7 @@
             [clojure.data.json :as json]
             [clj-time.core :as t]
             [clj-time.coerce :as tc]
-            [taoensso.timbre :refer [spy debug error]])
+            [taoensso.timbre :refer [spy debug debugf error]])
   (:import (java.sql Timestamp)))
 
 
@@ -59,9 +59,18 @@
                              true))
              :put! (fn [_]
                      (try
-                       (debug "Updating beer!")
                        (let [modified (tc/to-sql-time (t/now))
                              beers (beers/update-beer (:connection database) location floor type status foamy flat warm slow modified)]
+                         (debugf "Updating beer %s" {:location location
+                                                     :floor floor
+                                                     :type type
+                                                     :status status
+                                                     :foamy foamy
+                                                     :flat flat
+                                                     :warm warm
+                                                     :slow slow
+                                                     :modified modified})
+                         (beers/log-action (:connection database) location floor type status foamy flat warm slow modified)
                          {::data {:meta    {}
                                   :results {:modified (tc/to-long modified)}}})
                        (catch Throwable t
